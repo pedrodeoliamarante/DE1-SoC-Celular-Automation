@@ -1,0 +1,52 @@
+module gameOfLife(
+  input logic clk,
+  input logic superReset,
+  input logic gameState,
+  input logic smallReset,
+  input logic  [16:0] [16:0] userInput,
+  output logic [16:0] [16:0] cellStatus
+  );
+
+logic  [16:0] [16:0] grid;
+logic fGameState;
+
+ generate
+  genvar i;
+  genvar k;
+  for ( i = 0; i < 16; i++) begin
+    for ( k = 0; k < 16; k++) begin
+    cCell cell_inst (
+      .clk(clk),
+      .reset(smallReset),
+      .gameState(fGameState),
+      .neighbros({
+      cellStatus[(i-1)%16][(k-1)%16],
+      grid[(i)%16][(k-1)%16],
+      grid[(i+1)%16][(k-1)%16],
+      grid[(i-1)%16][(k)%16],
+      grid[(i+1)%16][(k)%16],
+      grid[(i-1)%16][(k+1)%16],
+      grid[(i)%16][(k+1)%16],
+      grid[(i+1)%16][(k-1)%16] }),
+      .userInput(userInput[i][k]),
+      .status(grid[i][k])
+    );
+    end
+  end
+  endgenerate
+
+  always_ff @(posedge clk) begin
+    if (superReset) begin
+      cellStatus <= 0;
+      fGameState <= 0;
+    end
+    else begin
+		for (int i = 0; i < 16; i++) begin
+      for (int k = 0; k < 16; k++) begin
+        cellStatus[i][k] <= grid[i][k];
+      end
+      end
+	  end
+    fGameState <= gameState;
+    end
+endmodule
