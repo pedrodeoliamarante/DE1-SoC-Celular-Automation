@@ -1,0 +1,27 @@
+module Mux8to1 (
+  input logic [15:0][15:0] data0,
+  input logic [15:0][15:0] data1,
+  input logic [15:0][15:0] data2,
+  input logic [15:0][15:0] data3,
+  input logic [15:0][15:0] data4,
+  input logic [15:0][15:0] data5,
+  input logic [15:0][15:0] data6,
+  input logic [15:0][15:0] data7,
+  input logic [2:0] select,
+  output logic [15:0][15:0] output
+);
+
+  always @(select or data0 or data1) begin
+    case (select)
+      3'b000: output <= data0;
+      3'b001: output <= data1;
+      3'b010: output <= data2;
+      3'b011: output <= data3;
+      3'b100: output <= data4;
+      3'b101: output <= data5;
+      3'b110: output <= data6;
+      3'b111: output <= data7;
+    endcase
+  end
+
+endmodule

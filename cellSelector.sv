@@ -4,6 +4,7 @@ module cellSelector(
   input logic [3:0] counterValue2,
   input logic reset,
   input logic KEY,
+  input logic [15:0][15:0] prevGame,
   output logic [15:0][15:0] userInput
 );
 
@@ -20,7 +21,8 @@ end
 
 always_ff @(posedge clk) begin
     if (reset) begin
-      userInput <= 0;
+      // set user input to be equal to an 2d array of 0s
+      userInput <= prevGame;
 		end
     else if (!reset)
       userInput[decimalValue1][decimalValue2] <= debug;

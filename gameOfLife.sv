@@ -1,13 +1,17 @@
 module gameOfLife(
   input logic clk,
   input logic gameState,
-  input logic  [3:0] [3:0] userInput,
-  output logic [3:0] [3:0] cellStatus
+  input logic freeze,
+  input logic  [15:0] [15:0] userInput,
+  output logic [15:0] [15:0] cellStatus
   );
 
-parameter gridSize = 4;
+parameter gridSize = 16;
+
+// creating cell 0 , 0
 cCell cell_inst0 (.clk(clk),
       .gameState(gameState),
+      .freeze(freeze),
       .neighbros({
       cellStatus[gridSize-1][gridSize-1],
       cellStatus[gridSize-1][0],
@@ -20,12 +24,14 @@ cCell cell_inst0 (.clk(clk),
       .userInput(userInput[0][0]),
       .status(cellStatus[0][0]));
 
+// creting all cells that have index [0][k]
 generate
   genvar k;
     for ( k = 1; k < gridSize; k++) begin : gen_block_in
     cCell cell_inst (
       .clk(clk),
       .gameState(gameState),
+      .freeze(freeze),
       .neighbros({
       cellStatus[(gridSize-1)][((k-1)%gridSize)],
       cellStatus[(gridSize-1)][(k)%gridSize],
@@ -41,12 +47,15 @@ generate
     end
   endgenerate
 
+
+  // creting all cells that have index [i][0]
   generate
   genvar i;
   for ( i = 1; i < gridSize; i++) begin  : gen_block_out
     cCell cell_inst (
       .clk(clk),
       .gameState(gameState),
+      .freeze(freeze),
       .neighbros({
       cellStatus[((i-1)%gridSize)][(gridSize)-1],
       cellStatus[(i-1)%gridSize][0],
@@ -62,6 +71,7 @@ generate
   end
   endgenerate
 
+// creating all other cells
  generate
   genvar x;
   genvar y;
@@ -70,6 +80,7 @@ generate
     cCell cell_inst (
       .clk(clk),
       .gameState(gameState),
+      .freeze(freeze),
       .neighbros({
       cellStatus[((x-1)%gridSize)][((y-1)%gridSize)],
       cellStatus[(x-1)%gridSize][(y)%gridSize],

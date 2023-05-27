@@ -2,13 +2,14 @@ module doubleCounterDisplay(
   input logic clk,
   input logic reset,
   input logic count,
+  input logic deCount,
   output logic [6:0] out1,
   output logic [6:0] out2,
   output logic [3:0] counterValue
 );
 
 
- four_bit_counter counter(.clk(clk), .reset(reset), .count(count), .out(counterValue));
+ four_bit_counter counter(.clk(clk), .reset(reset), .count(count), .deCount(deCount), .out(counterValue));
 
  logic [6:0] fOut1;
  logic [6:0] fOut2;

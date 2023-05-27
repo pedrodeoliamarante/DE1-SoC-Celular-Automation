@@ -1,9 +1,9 @@
 
 module four_bit_counter_tb ();
-  logic clk, reset, count;
+  logic clk, reset, count, deCount;
   logic [3:0] out;
 
-  four_bit_counter dut (.clk, .reset ,.count,  .out);
+  four_bit_counter dut (.clk, .reset ,.count, .deCount,  .out);
 
   // Set up the clock
   parameter CLOCK_PERIOD=100;
@@ -32,7 +32,7 @@ module four_bit_counter_tb ();
 	 count <= 1; ;  @(posedge clk);
 	 count <= 1; ;  @(posedge clk);
 	 @(posedge clk);
-	 @(posedge clk);
+	 count <= 0; deCount <= 1;@(posedge clk);
    @(posedge clk);
 	 @(posedge clk);
    @(posedge clk);

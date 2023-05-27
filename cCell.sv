@@ -2,6 +2,7 @@ module cCell(
   input logic clk, gameState,
   input logic [7:0]  neighbros,
   input logic userInput,
+  input logic freeze,
   output logic status
 );
 
@@ -30,7 +31,8 @@ always_comb begin
 end
 
 always_ff @(posedge clk) begin
-		 if (!gameState) status <= userInput;
+		 if (freeze) status <= status | userInput;
+     else if (!gameState) status <= userInput;
      else status <= nextStatus;
 	  end
 endmodule

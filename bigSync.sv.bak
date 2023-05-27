@@ -1,0 +1,16 @@
+module bigSync(
+  input logic clk,
+  input logic [15:0][15:0] KEY,
+  output logic [15:0][15:0] sync_KEY_out
+);
+	logic sync_KEY;
+
+  always_ff @(posedge clk) begin
+   sync_KEY <= KEY;
+	sync_KEY_out <= sync_KEY;
+  end
+
+
+
+
+endmodule // synchronizer
